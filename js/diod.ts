@@ -8,13 +8,15 @@ export class Diod {
         this.state = false;
         this.link = null;
         this.id = id;
-        this.element = this.getElement();
+        this.element = this.createElement();
         this.addDiodEventListeners();
     }
     changeDiodState(diod: Diod){
         return () => {
             !diod.state;
             diod.element.classList.toggle("diod-on");
+            this.element.dataset.state = (( 'false' === this.element.dataset.state)).toString();
+            console.log(this.element.dataset.state);
         }
     }
     // getDiodInfo(){
@@ -26,11 +28,12 @@ export class Diod {
             e.dataTransfer.setData("text/plain", `${this.id}`);
         })
     }
-    private getElement(){
+    private createElement(){
         const el = document.createElement("div");
         el.classList.add("diod-element");
         el.id = this.id.toString();
         el.setAttribute('draggable', 'true');
+        el.dataset.state = this.state.toString();
         this.element = el;
         return el;
     }

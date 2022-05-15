@@ -9,13 +9,12 @@
             function dropController(event) {
                 event.preventDefault();
                 const data = event.dataTransfer.getData("text/plain");
-                const diod = document.querySelector(data);
-                const new_x = `${event.x-30}px`;
-                const new_y = `${event.y-30}px`;
-                console.log(diod.parentElement.clientWidth, new_x);
-                if(diod.parentElement.clientWidth-50 > parseInt(new_x)){
-                    diod.style.left = new_x;
-                    diod.style.top = new_y;
+                const element = document.getElementById(data);
+                const new_x = `${event.x}px`;
+                const new_y = `${event.y}px`;
+                if(element.parentElement.clientWidth-25 > parseInt(new_x)){
+                    element.style.left = new_x;
+                    element.style.top = new_y;
                 }
             }
             function dragoverController(ev) {
@@ -23,17 +22,16 @@
                 ev.dataTransfer.dropEffect = "move";
             }
         </script>
+
     </head>
     <body>
         <div class="container">
-            <div class="board" ondragover="dragoverController(event)" ondrop="dropController(event)">
-                    <div class="diod-element" draggable="true" ></div>
-            </div>
+            <div class="board" ondragover="dragoverController(event)" ondrop="dropController(event)"></div>
             <div class="elements">
                 <div class="diod-menu">DIOD</div>
-                <div class="gate-not-menu">NOT</div>
-                <div class="gate-and-menu">AND</div>
-                <div class="gate-or-menu">OR</div>
+                <div class="gate-not-menu"><img src="css/gateNOT.png" alt="NOT"></div>
+                <div class="gate-and-menu"><img src="css/gateAND.png" alt="AND"></div>
+                <div class="gate-or-menu"><img src="css/gateOR.png" alt="OR"></div>
             </div>
         </div>
     </body>

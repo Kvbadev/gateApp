@@ -1,28 +1,37 @@
 export class Diod {
-    readonly source: Element;
     link?: string;
     state: boolean;
+    element: HTMLDivElement;
+    id: number
 
-    constructor(src: Element){
-        this.source = src;
+    constructor(id: number){
         this.state = false;
         this.link = null;
+        this.id = id;
+        this.element = this.getElement();
         this.addDiodEventListeners();
     }
     changeDiodState(diod: Diod){
         return () => {
             !diod.state;
-            diod.source.classList.toggle("diod-on");
+            diod.element.classList.toggle("diod-on");
         }
     }
-    moveDiod(diod: Diod, event: Event){
-
-    }
+    // getDiodInfo(){
+    //     return this;
+    // }
     addDiodEventListeners(){
-        this.source.addEventListener('click', this.changeDiodState(this));
-        this.source.addEventListener('dragstart', (e : DragEvent) => {
-            e.dataTransfer.dropEffect = "move";
-            e.dataTransfer.setData("text/plain", `.${this.source.classList}`);
+        this.element.addEventListener('click', this.changeDiodState(this));
+        this.element.addEventListener('dragstart', (e : DragEvent) => {
+            e.dataTransfer.setData("text/plain", `${this.id}`);
         })
+    }
+    private getElement(){
+        const el = document.createElement("div");
+        el.classList.add("diod-element");
+        el.id = this.id.toString();
+        el.setAttribute('draggable', 'true');
+        this.element = el;
+        return el;
     }
 }

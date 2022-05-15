@@ -10,16 +10,34 @@ body{
     background-color: rgb(18, 17, 17);
     display: flex;
     flex-direction: column;
-    border: solid 0.3vw rgb(197, 196, 190);
+    align-items: center;
+    border: 3px solid white;
+    border-radius: 20px;
+    padding: 10px;
 }
 .elements > div{
     margin: 4px;
-    padding: 1vw;
+    height: 5vw;
+    width: 13vw;
+    /* padding: 1vw; */
     font-size: 30px;
     cursor: pointer;
-    border: dotted 2px white;
-    text-align: center;
+    border: solid 2px white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: white;
+    transition:all 200ms linear;
+}
+.elements > div:hover{
+    /* transition:all 200ms linear; */
+    /* background-color: rgba(230, 233, 44, 0.3); */
+    background-color: rgb(197, 196, 190);
+}
+.elements > div > img{
+    width: 100px;
+    height: 50px;
 }
 .board{
     width: 85vw;
@@ -35,12 +53,12 @@ body{
     top: 300px;
     left: 500px;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    border: solid 1.5px black;
+    border: solid 4.5px black;
     background: rgb(113,105,102);
-    background: linear-gradient(90deg, rgb(47, 45, 45) 0%, rgb(98, 100, 103) 100%);
+    background: linear-gradient(90deg, rgb(42, 40, 40) 0%, rgb(98, 100, 103) 100%);
     z-index: 0;
 }
 .diod-on{
@@ -48,11 +66,26 @@ body{
     background: linear-gradient(90deg, rgba(180,108,58,1) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%);
 }
 
-.menu-element{
+.context-menu{
     position: absolute;
     background-color: white;
-    width: 70px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
+    width: 100px;
+    height: 300px;
+    display: none;
 }
+
+.gate-board{
+    color: black;
+    position: absolute;
+}
+.gate-board > img {
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    filter: invert(1);
+}
+/* 
+.diod-menu{}
+.gate-not-menu{}
+.gate-or-menu{}
+.gate-and-menu{} */

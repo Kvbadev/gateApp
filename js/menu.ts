@@ -24,22 +24,28 @@ export class Menu{
                     const newElem = (new Diod(count++)).element;
                     newElem.style.left = this.elementsSpawnpoint.x + 'px';
                     newElem.style.top = this.elementsSpawnpoint.y + 'px';
-                    board.appendChild(newElem);
+                    document.body.appendChild(newElem)
                     console.log(newElem);
                     
                 } else {
                     const newElem = document.createElement("div");
                     newElem.innerHTML = element.innerHTML;
                     newElem.id = `${element.classList[0].slice(0, element.classList[0].lastIndexOf("menu"))}board-${count++}"`;
-                    newElem.draggable = true;
+                    //TODO: dragging in js instead of html
+                    //TODO: class for logic gate instead of hardcoded element
                     newElem.style.left = this.elementsSpawnpoint.x + 'px';
                     newElem.style.top = this.elementsSpawnpoint.y + 'px';
                     newElem.classList.add("gate-board");
                     console.log(newElem);
-                    newElem.addEventListener("dragstart", (ev : DragEvent) => {
-                        ev.dataTransfer.setData("text/plain", newElem.id);
+                    newElem.addEventListener('click', (ev: MouseEvent) => {
+                    //TODO: selecting specific part of image to activate linking
+                    // console.log(ev.x, ':',newElem.style.left, ev.y,':', newElem.style.left);
+                    // if(ev.y-24+'px' == newElem.style.top && ev.x-2+'px' == newElem.style.top){
+                    //     console.log('x');
+                    // }
+                        
                     })
-                    board.appendChild(newElem);
+                    document.body.appendChild(newElem);
                 }
             })
         });

@@ -1,4 +1,3 @@
-import {Diod} from './diod.js';
 import {Menu} from './menu.js';
 
 const board = document.querySelector(".board");

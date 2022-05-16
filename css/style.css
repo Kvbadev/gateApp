@@ -70,23 +70,14 @@ body{
     background: linear-gradient(90deg, rgba(180,108,58,1) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%);
 }
 
-.context-menu{
-    position: absolute;
-    background-color: white;
-    width: 100px;
-    height: 300px;
-    display: none;
-}
-
 .gate-board{
     color: black;
     position: absolute;
 }
 .gate-board > img {
-    width: 100px;
+    width: 120px;
     height: 50px;
     cursor: pointer;
-    filter: invert(1);
 }
 /* 
 .diod-menu{}

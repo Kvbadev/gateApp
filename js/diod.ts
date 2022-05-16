@@ -45,8 +45,7 @@ export class Diod {
                     wrongPos(ev.x+5, ev.y+5);
                 }
 
-                let droppableBelow = elementBelow.closest('.board');
-                if(!elementBelow.closest('.board')){
+                else if(!(elementBelow.closest('.board'))){
                     wrongPos(ev.x-15, ev.y);
                 }
 

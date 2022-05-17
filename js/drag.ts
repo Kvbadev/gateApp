@@ -38,7 +38,7 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
                 if(fire){
                     element.dispatchEvent(new Event("mouseup"));
                 }
-                moveAt.call(this, x, y);
+                moveAt( x, y);
             }
             
             if(!elementBelow){ 

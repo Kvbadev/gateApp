@@ -24,33 +24,39 @@ export class Gate {
         divImg.src = `css/gate${this.type}board.png`;
         newDiv.append(divImg);
         
-        addDragMethod(newDiv, (ev: MouseEvent, gate: Gate) => {
-            let cord = gate.getInputsCords(gate);
-            console.log(cord);
-            console.log(ev.x, ev.y);
-            
-            if(ev.pageX === cord.x && ev.pageY === cord.y){
-                console.log('x');
-            }
+        addDragMethod(newDiv, (ev: MouseEvent, gate: Gate) => { //(element to which drag method should be added, onclick function of that element)
+
+            console.log(gate.whichInputClicked(ev.x, ev.y, gate));
             
         }, this);
         
         return newDiv;
     }
-    getInputsCords(gate: Gate){  //gate arg because of problems with 'this' in objects
-        if(gate.type === "NOT"){
+
+    whichInputClicked(evX:Number, evY:Number, gate: Gate){ //returns index of input in which mouseEvent was fired or number 3
+        for(const [i,input] of gate.inputs.entries()){
+            console.log(gate, input);
             
-            return {x : gate.element.offsetLeft + gate.inputs[0].inpCenter.imgOffsetX, y: gate.element.offsetTop + gate.inputs[0].inpCenter.imgOffsetY};
+            const imgOffX = input.inpCenter.imgOffsetX;
+            const imgOffY = input.inpCenter.imgOffsetY;
+            const gateCenter = {x: gate.element.offsetLeft+imgOffX, y: gate.element.offsetTop+imgOffY};
+            const sLen = input.inpCenter.sideLen;
+
+            if(evX >= gateCenter.x-sLen && evX <= gateCenter.x+sLen && evY >= gateCenter.y-sLen && evY <= gateCenter.y+sLen){
+                return i;
+            }
         }
+        return 3;
     }
     setInputsInfo(){  
-        if(this.type = "NOT"){
+        if(this.type === "NOT"){
             this.inputs = [
                 {
                     src: null,
                     inpCenter: {
                         imgOffsetX: 10,
-                        imgOffsetY: 25
+                        imgOffsetY: 25,
+                        sideLen: 9
                     }
                 }
             ]

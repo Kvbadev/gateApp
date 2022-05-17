@@ -17,7 +17,7 @@ export class Diod {
         ths.dataset.state = (( 'false' === this.element.dataset.state)).toString();
     }
     addDiodEventListeners(){
-        addDragMethod(this.element, (ths: HTMLDivElement) => {
+        addDragMethod(this.element, (ev: MouseEvent, ths: HTMLDivElement) => {
             this.changeDiodState(ths);
         }, this.element); //arg that points to this
     }

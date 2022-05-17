@@ -6,9 +6,12 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
         clickTime = new Date().getTime(); //to prevent changing state when dragging
         const allowedClasses = ["board", "gate-board", "diod-element", "gate-img"];
         
+        let shiftX = ev.clientX - element.getBoundingClientRect().left;
+        let shiftY = ev.clientY - element.getBoundingClientRect().top;
+        
         function moveAt(pageX, pageY){
-            element.style.left = pageX - element.offsetWidth / 2 + 'px';
-            element.style.top = pageY - element.offsetHeight / 2 + 'px';
+            element.style.left = pageX - shiftX + 'px';
+            element.style.top = pageY - shiftY + 'px';
         }
 
             
@@ -22,7 +25,10 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
         }
 
         const onMouseMove = (ev: MouseEvent) => {
-            moveAt.call(this, ev.x, ev.y);
+            
+            moveAt(ev.x, ev.y);
+            // console.log("move coord: ",ev.x, ev.y);
+            
             
             element.hidden = true; //because item is always element below cursor
             let elementBelow = document.elementFromPoint(ev.clientX,ev.clientY);
@@ -52,9 +58,9 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
             element.onmouseup = null;
         }
     })
-    element.addEventListener('click', () => {
+    element.addEventListener('click', (ev: MouseEvent) => {
         if(new Date().getTime()-clickTime < 250){
-            onClickFunc(...onClickFuncArgs);
+            onClickFunc(ev, ...onClickFuncArgs); //first argument of passed function always has to be a MouseEvent even when the function doesn't use it
         }
 });
 

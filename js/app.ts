@@ -7,4 +7,4 @@ const menuSelectors = {
     and: document.querySelector(".gate-and-menu"),
     or: document.querySelector(".gate-or-menu"),
 }
-const menu = new Menu(menuSelectors.diod, menuSelectors.not, menuSelectors.and, menuSelectors.or, board, {x:50 ,y:50});
+const menu = new Menu(menuSelectors.diod as HTMLDivElement, menuSelectors.not as HTMLDivElement, menuSelectors.and as HTMLDivElement, menuSelectors.or as HTMLDivElement, board, {x:50 ,y:50});

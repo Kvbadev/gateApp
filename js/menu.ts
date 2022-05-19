@@ -24,8 +24,6 @@ export class Menu{
             element.addEventListener('click', (ev : MouseEvent) => {
 
                 let newElem;
-                console.log(element.dataset.type);
-                
                 element.classList.contains("diod-menu") ? newElem = (new Diod(count++)).element : newElem = (new Gate(element.dataset.type as gateType, count++)).element;
                 newElem.style.left = this.elementsSpawnpoint.x + 'px';
                 newElem.style.top = this.elementsSpawnpoint.y + 'px';

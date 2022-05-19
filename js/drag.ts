@@ -27,8 +27,6 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
         const onMouseMove = (ev: MouseEvent) => {
             
             moveAt(ev.x, ev.y);
-            // console.log("move coord: ",ev.x, ev.y);
-            
             
             element.hidden = true; //because item is always element below cursor
             let elementBelow = document.elementFromPoint(ev.clientX,ev.clientY);
@@ -45,7 +43,7 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
                 wrongPos(ev.x+5, ev.y+5);
             }
             else if(!isAllowed(elementBelow, allowedClasses)){
-                wrongPos(ev.x-15, ev.y);
+                wrongPos(ev.x-15, ev.y, true);
             }
             
         }
@@ -55,13 +53,23 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
         element.onmouseup = (ev: MouseEvent) => {
             element.style.zIndex = "0";
             document.removeEventListener('mousemove', onMouseMove);
+            document.oncontextmenu = null;
+            document.onscroll = null;
             element.onmouseup = null;
         }
+        document.oncontextmenu = (ev: MouseEvent) => {
+            moveAt(ev.x, ev.y);
+            element.dispatchEvent(new Event('mouseup'));
+        }
+        document.onscroll = (ev: MouseEvent) => {
+            moveAt(ev.x, ev.y);
+            element.dispatchEvent(new Event('mouseup'));
+        }
     })
-    element.addEventListener('click', (ev: MouseEvent) => {
+    element.onclick = (ev: MouseEvent) => {
         if(new Date().getTime()-clickTime < 250){
             onClickFunc(ev, ...onClickFuncArgs); //first argument of passed function always has to be a MouseEvent even when the function doesn't use it
         }
-});
+    }
 
 };

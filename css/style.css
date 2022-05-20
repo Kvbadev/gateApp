@@ -1,3 +1,10 @@
+:root{
+    --main-bg-color: rgb(197, 196, 190);
+    --diod-side: 20px;
+    --gate-width: 120px;
+    --gate-heigth: 50px;
+}
+
 body{
     margin: 0;
     padding: 0;
@@ -56,14 +63,15 @@ body{
 
 .diod-element{
     position: absolute;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    /* border-radius: 50%; */
+    width: var(--diod-side);
+    height: var(--diod-side);
     cursor: pointer;
-    border: solid 4.5px black;
-    background: rgb(113,105,102);
+    border: solid 4.5px transparent;
     background: linear-gradient(90deg, rgb(42, 40, 40) 0%, rgb(98, 100, 103) 100%);
-    z-index: 0;
+    border-image: linear-gradient(90deg, rgb(0, 0, 0) 50%, rgb(255, 255, 255) 50%);
+    border-image-slice: 1;
+    z-index: 1;
 }
 .diod-on{
     background: rgb(180,108,58);
@@ -73,15 +81,17 @@ body{
 .gate-board{
     color: black;
     position: absolute;
+    width: var(--gate-width);
+    height: var(--gate-heigth);
 }
 .gate-board > img {
-    width: 120px;
-    height: 50px;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
 }
 .input-choose{
     position:absolute; 
-    top: 3%;
+    top: 88%;
     left: 1%;
     font-size: 40px;
     font-style: normal;
@@ -91,8 +101,21 @@ body{
     text-align: center;
     background-color: rgba(0, 0, 0, 0.1);
 }
-/* 
-.diod-menu{}
-.gate-not-menu{}
-.gate-or-menu{}
-.gate-and-menu{} */
+.gate-color{
+    position: relative;
+    top: -80%;
+    left: 30%;
+    border-radius: 50%;
+    width: var(--diod-side);
+    height: var(--diod-side);
+    cursor: pointer;
+    z-index: 0;
+}
+.diod-color{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}

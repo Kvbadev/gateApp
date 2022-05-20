@@ -4,7 +4,7 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
         element.style.zIndex = "1000";
         
         clickTime = new Date().getTime(); //to prevent changing state when dragging
-        const allowedClasses = ["board", "gate-board", "diod-element", "gate-img"];
+        const allowedClasses = ["board", "gate-board", "diod-element", "gate-img", "gate-color"];
         
         let shiftX = ev.clientX - element.getBoundingClientRect().left;
         let shiftY = ev.clientY - element.getBoundingClientRect().top;

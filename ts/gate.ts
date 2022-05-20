@@ -4,17 +4,19 @@ import { Diod } from "./diod.js";
 
 export class Gate {
     type: "NOT" | "OR" | "AND";
-    outcome: boolean;
+    outcome: 0|1|2;
     element: HTMLDivElement;
     inputs: Array<any>;
     output: HTMLDivElement;
-    outputBit: boolean;
     id: Number;
+    color: any;
 
     constructor(type: "NOT"|"OR"|"AND",el_id: Number) {
         this.type = type;
         this.id = el_id;
         this.element = this.createElement();
+        this.outcome = 2;
+        this.color = 0;
         this.setInputsInfo();
     }
 
@@ -22,11 +24,21 @@ export class Gate {
         const newDiv = document.createElement("div");
         newDiv.id = `gate${this.type}-`+this.id;
         newDiv.classList.add("gate-board");
+        newDiv.draggable = false;
+
         const divImg = document.createElement("img");
         divImg.classList.add("gate-img");
         divImg.draggable = false;
         divImg.src = `css/gate${this.type}board.png`;
-        newDiv.append(divImg);
+
+        const divColor = document.createElement("div");
+        divColor.classList.add("gate-color");
+        (new Date).getTime();
+        this.color = `hsla(${(Math.random()* (new Date).getTime()%361)}, 100%, 50%, 1)`;
+        divColor.style.backgroundColor = this.color;
+        divColor.draggable = false;
+
+        newDiv.append(divImg, divColor);
         
         addDragMethod(newDiv, (ev: MouseEvent, gate: Gate) => { //(element to which drag method should be added, onclick function of that element)
 
@@ -36,7 +48,7 @@ export class Gate {
                 this.addInputElReminder();
                 this.addInput(inpNum);
             } else {
-                console.log(this.outputBit);
+                console.log(this.outcome);
             }
             
         }, this);
@@ -83,8 +95,7 @@ export class Gate {
                         this.calcOutput();
                     });
                 }
-                // tmpTarget.dispatchEvent(new Event('click')); //to cancel switching diod on/off
-                tmpTarget.dispatchEvent(linkInput(this.element));
+                tmpTarget.dispatchEvent(linkInput(this.element, this.color));
             }
             document.body.removeChild(document.querySelector(".input-choose"));
             document.onclick = null;
@@ -92,7 +103,7 @@ export class Gate {
     }
     calcOutput(){
         if(this.type === "NOT"){
-            this.outputBit = !this.inputs[0].inpState;
+            this.outcome = !this.inputs[0].inpState as unknown as 0|1|2;
         }
     }
     setInputsInfo(){  

@@ -1,3 +1,10 @@
+:root{
+    --main-bg-color: rgb(197, 196, 190);
+    --diod-side: 25px;
+    --gate-width: 120px;
+    --gate-heigth: 50px;
+}
+
 body{
     margin: 0;
     padding: 0;
@@ -56,31 +63,72 @@ body{
 
 .diod-element{
     position: absolute;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    /* border-radius: 50px; */
+    width: var(--diod-side);
+    height: var(--diod-side);
     cursor: pointer;
-    border: solid 4.5px black;
-    background: rgb(113,105,102);
+    border: solid 5px black;
     background: linear-gradient(90deg, rgb(42, 40, 40) 0%, rgb(98, 100, 103) 100%);
-    z-index: 0;
+    z-index: 1;
 }
 .diod-on{
-    background: rgb(180,108,58);
-    background: linear-gradient(90deg, rgba(180,108,58,1) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%);
+    /* animation: diod_border 2s linear infinite; */
+    /* background: rgb(6,176,73); */
+    /* border-image: linear-gradient(90deg, rgba(6,176,73,1) 0%, rgba(47,186,24,0.9962359943977591) 40%, rgba(119,255,0,1) 100%); */
+    border-image: linear-gradient(90deg, rgb(186, 120, 73) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%); 
+    border-image-slice: 1;
+    /* background: rgb(180,108,58); */
 }
+/*@keyframes diod_border{
+    0%{
+    border-image: linear-gradient(90deg, rgb(186, 120, 73) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%); 
+    }
+    50%{
+    border-image: linear-gradient(90deg, rgb(177, 166, 157) 0%, rgba(253,151,29,1) 50%, rgb(11, 23, 156) 100%); 
+    }
+    100%{
+    border-image: linear-gradient(90deg, rgb(197, 9, 75) 0%, rgba(253,151,29,1) 50%, rgb(0, 0, 0) 100%); 
+    }
+} */
 
 .gate-board{
     color: black;
     position: absolute;
+    width: var(--gate-width);
+    height: var(--gate-heigth);
 }
 .gate-board > img {
-    width: 120px;
-    height: 50px;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
 }
-/* 
-.diod-menu{}
-.gate-not-menu{}
-.gate-or-menu{}
-.gate-and-menu{} */
+.select-mode-reminder{
+    position:absolute; 
+    top: 88%;
+    left: 1%;
+    font-size: 40px;
+    font-style: normal;
+    color: black;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.gate-color{
+    position: relative;
+    top: -80%;
+    left: 30%;
+    border-radius: 50%;
+    width: var(--diod-side);
+    height: var(--diod-side);
+    cursor: pointer;
+    z-index: 0;
+}
+.diod-color{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}

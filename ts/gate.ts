@@ -122,7 +122,7 @@ export class Gate {
                         this.calcOutcome();
                         // this.inputs[0].inpSrc.dispatchEvent(sendOutcomeToDiod(this.outcome));
                         if(this.output.outSrc){
-                            this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.outcome));
+                            this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
                         }
                     });
                     tmpTarget.dispatchEvent(linkDiod(this.element, this.color));
@@ -158,7 +158,7 @@ export class Gate {
                     
                     this.output.outSrc = tmpTarget;
                     tmpTarget.dispatchEvent(linkDiod(this.element, this.color, true));
-                    tmpTarget.dispatchEvent(sendOutcomeToDiod(this.outcome));
+                    tmpTarget.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
                 }
             }
             document.body.removeChild(document.querySelector(".select-mode-reminder"));

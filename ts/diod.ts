@@ -45,39 +45,61 @@ export class Diod {
 
         this.element.addEventListener('linkDiod', (ev: any) => {
             if(ev.detail){
-                this.links.push(ev.detail);
-                if(ev.detail.isOutput){
+                if(ev.detail.isOutput && !this.immutable){
                     this.immutable = true;
-                } else {
+                    this.links.push(ev.detail);
+                    this.setBackgroundColor();
+                    console.log('if');
+                } else if(!ev.detail.isOutput){
+                    this.links.push(ev.detail);
                     this.stateSend(ev.detail.src);
+                    this.setBackgroundColor();
+                    console.log('else if');
+                    
                 }
-                this.setBackgroundColor();
+                else{
+                    console.log("This diod is already linked as an output!");
+                }
             }
+            
         })
         this.element.addEventListener('sendOutcomeToDiod', (ev: any) => {
-            if(ev.detail.outcome!==2){
-                this.changeDiodState(ev.detail.outcome)
-            } else {
-                this.changeDiodState(false);
-                console.log('2');
+            console.log(this.isConnected(ev.detail.id));
+            
+            if(this.isConnected(ev.detail.id)){
+                
+                if(ev.detail.outcome!==2){
+                    console.log('y');
+                    this.changeDiodState(ev.detail.outcome)
+                } else {
+                    this.changeDiodState(false);
+                    console.log('none');
+                }
             }
         })
         this.element.addEventListener('unlinkDiod', (ev: any) => {
-            if(!ev.detail.isOutput){
 
+            if(this.isConnected(ev.detail.id)){
                 this.links = this.links.filter((link) => {
+                    // console.log(link);
                     return link.src.id !== ev.detail.id;
                 });
 
                 this.links.length ? this.setBackgroundColor() : this.element.style.background = "";
-            } else {
                 this.changeDiodState(false);
-                this.immutable = false;
-                console.log('output unlinked');
-                
+                if(ev.detail.isOutput){
+                    this.immutable = false;
+                    console.log('output unlinked');
+                }
             }
-            
+        
         })
+    }
+    isConnected(id: string){
+        for(const link of this.links){
+            if(link.src.id === id) return true;
+        }
+        return false;
     }
     private createElement(){
         const el = document.createElement("div");

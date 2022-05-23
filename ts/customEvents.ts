@@ -11,8 +11,9 @@ export const unlinkDiod = (gateID: string, isOutput?: boolean) => new CustomEven
         isOutput: isOutput || false
     }
 });
-export const sendOutcomeToDiod = (outcome: 0|1|2) => new CustomEvent('sendOutcomeToDiod', {
+export const sendOutcomeToDiod = (gateID: string, outcome: 0|1|2) => new CustomEvent('sendOutcomeToDiod', {
     detail: {
+        id: gateID,
         outcome: outcome
     }
 })

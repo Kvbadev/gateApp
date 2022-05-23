@@ -68,7 +68,7 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
     })
     element.onclick = (ev: MouseEvent) => {
         if(new Date().getTime()-clickTime < 250){
-            if(!document.querySelector(".input-choose")){ //to prevent normal behavior when waiting for a new input
+            if(!document.querySelector(".select-mode-reminder")){ //to prevent normal behavior when waiting for a new input
                 onClickFunc(ev, ...onClickFuncArgs); //first argument of passed function always has to be a MouseEvent even when the function doesn't use it
             }
         }

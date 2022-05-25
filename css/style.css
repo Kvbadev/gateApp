@@ -132,3 +132,19 @@ body{
     border-radius: 50%;
     cursor: pointer;
 }
+.bin{
+    position:absolute;
+    top: 86%;
+    left: 78%;
+    width: 100px;
+    height: 100px;
+}
+.bin > i {
+    font-size: 70px;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+}
+
+.bin :hover{
+    color: red;
+}

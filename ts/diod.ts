@@ -1,4 +1,4 @@
-import { linkInputStateSend } from "./customEvents.js";
+import { diodRemoved, linkInputStateSend, unlinkDiod } from "./customEvents.js";
 import { addDragMethod } from "./drag.js";
 export class Diod {
     links?: Array<any>;
@@ -85,6 +85,13 @@ export class Diod {
                 }
             }
         
+        })
+        this.element.addEventListener('deleteElement', () => {
+            this.links.forEach( (link, i) => {
+                console.log(link);
+                link.src.dispatchEvent(diodRemoved(this.element.id))
+            })
+            this.element.remove();
         })
     }
     isConnected(id: string){

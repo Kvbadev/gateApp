@@ -72,23 +72,49 @@ export class Gate {
         }, this);
 
         newDiv.addEventListener('linkInputStateSend', (ev:any) => {
-            console.log(`new state received on gate id: ${this.id}, state: ${ev.detail.state}`);
             
             if(this.inputs[0].inpSrc!=null && this.inputs[0].inpSrc.id === ev.detail.id){
-                console.log(`old input[0] state: ${this.inputs[0].inpState}; new: ${ev.detail.state}`);
                 this.inputs[0].inpState = ev.detail.state;  //if inp[0] does not exist or has other id, then latter one has to be event dispatcher
             } else {
-                console.log(`old input[1] state: ${this.inputs[1].inpState}; new: ${ev.detail.state}`);
                 this.inputs[1].inpState = ev.detail.state;
             }
-            
             this.calcOutcome();
-            // console.log(this.outcome);
             
             if(this.output.outSrc){
                 this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
             }
         });
+        newDiv.addEventListener('deleteElement', () => {
+            this.inputs.forEach( (input, i) => {
+                if(input.inpSrc){
+                    input.inpSrc.dispatchEvent(unlinkDiod(newDiv.id));
+                }
+            })
+            if(this.output.outSrc){
+                this.output.outSrc.dispatchEvent(unlinkDiod(newDiv.id, true));
+            }
+            newDiv.remove();
+        })
+        newDiv.addEventListener('diodRemoved', (ev: any) => {
+            console.log(this.output, this.inputs);
+            this.inputs.forEach( (input, i) => {
+                if(input.inpSrc){
+                    console.log(ev.detail.id, input.inpSrc.id);
+                    if(input.inpSrc.id === ev.detail.id){
+                        input.inpSrc = null;
+                        input.inpState = 2;
+                    }
+                }
+            })
+            this.calcOutcome();
+            if(this.output.outSrc!==null){
+                this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
+                
+                if(this.output.outSrc.id === ev.detail.id){
+                    this.output.outSrc = null;
+                }
+            }
+        })
         
         return newDiv;
     }

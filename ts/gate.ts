@@ -45,6 +45,7 @@ export class Gate {
             if(IOnum!==3){
 
                 if(IOnum===2){ //2 means output point
+
                     if(this.output.outSrc){
                         this.output.outSrc.dispatchEvent(unlinkDiod(this.element.id, true)); //true because we unlink output diod
                         this.output.outSrc = null;
@@ -52,8 +53,8 @@ export class Gate {
                     this.addSelectElementReminder();
                     this.addOutput();
 
-                } else {
-
+                }
+                else {
                     if(this.inputs[IOnum].inpSrc){
                         this.inputs[IOnum].inpSrc.dispatchEvent(unlinkDiod(this.element.id));
                         this.inputs[IOnum].inpSrc = null;
@@ -68,6 +69,24 @@ export class Gate {
                 console.log(this.outcome);
             }
         }, this);
+
+        newDiv.addEventListener('linkInputStateSend', (ev:any) => {
+            
+            
+            if(this.inputs[0].inpSrc!=null && this.inputs[0].inpSrc.id === ev.detail.id){
+                this.inputs[0].inpState = ev.detail.state;  //if inp[0] does not exist or has other id, then latter one has to be event dispatcher
+            } else {
+                this.inputs[1].inpState = ev.detail.state;
+            }
+            
+            this.calcOutcome();
+            console.log(this.outcome);
+            
+            
+            if(this.output.outSrc){
+                this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
+            }
+        });
         
         return newDiv;
     }
@@ -115,16 +134,8 @@ export class Gate {
 
                 if(tmpTarget.classList.contains("diod-element")){
                     
-                    this.inputs[0].inpSrc = tmpTarget;
+                    this.inputs[inpNum].inpSrc = tmpTarget;
 
-                    this.element.addEventListener('linkInputStateSend', (ev:any) => {
-                        this.inputs[0].inpState = ev.detail.state; //listening for event linkInputStateSend which is fired when diod's state is changing
-                        this.calcOutcome();
-                        // this.inputs[0].inpSrc.dispatchEvent(sendOutcomeToDiod(this.outcome));
-                        if(this.output.outSrc){
-                            this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
-                        }
-                    });
                     tmpTarget.dispatchEvent(linkDiod(this.element, this.color));
                 }
             }
@@ -169,6 +180,15 @@ export class Gate {
     calcOutcome(){ //checks if any input is connected and if so what is their state to calculate output depending on gate
         if(this.type === "NOT"){
             this.inputs[0].inpSrc ? this.outcome = !this.inputs[0].inpState as unknown as 0|1|2 : this.outcome = 2;
+            console.log(this.inputs[0].inpState);
+        } else if(this.type === "OR"){
+            const out = (this.inputs[1].inpSrc && this.inputs[0].inpSrc) ? (this.inputs[0].inpState == 1 || this.inputs[1].inpState == 1 ? 1 : 0) : 2;
+            
+            this.outcome = out as unknown as 0|1|2;
+        } else if(this.type === "AND"){
+            const out = (this.inputs[0].inpSrc && this.inputs[1].inpSrc) ? (this.inputs[0].inpState == 1 && this.inputs[1].inpState == 1 ? 1 : 0) : 2;
+            
+            this.outcome = out;
         }
     }
     setInputsOutputsInfo(){ //sets initial inputs info
@@ -190,6 +210,66 @@ export class Gate {
                     outOffsetX: 110,
                     outOffsetY: 25,
                     sideLen: 9
+                }
+            }
+        }
+        else if(this.type === "AND"){
+            this.inputs = [
+                {
+                    inpSrc: null,
+                    inpCenter: {
+                        inpOffsetX: 10,
+                        inpOffsetY: 13,
+                        sideLen: 6
+                    },
+                    inpState: null
+                },
+                {
+                    inpSrc: null,
+                    inpCenter: {
+                        inpOffsetX: 10,
+                        inpOffsetY: 36,
+                        sideLen: 6
+                    },
+                    inpState: null
+                }
+            ]
+            this.output = {
+                outSrc: null,
+                outCenter: {
+                    outOffsetX: 112,
+                    outOffsetY: 26,
+                    sideLen: 6
+                }
+            }
+        }
+        else if(this.type === "OR"){
+            this.inputs = [
+                {
+                    inpSrc: null,
+                    inpCenter: {
+                        inpOffsetX: 13,
+                        inpOffsetY: 13,
+                        sideLen: 6
+                    },
+                    inpState: null
+                },
+                {
+                    inpSrc: null,
+                    inpCenter: {
+                        inpOffsetX: 13,
+                        inpOffsetY: 36,
+                        sideLen: 6
+                    },
+                    inpState: null
+                }
+            ]
+            this.output = {
+                outSrc: null,
+                outCenter: {
+                    outOffsetX: 112,
+                    outOffsetY: 26,
+                    sideLen: 6
                 }
             }
         }

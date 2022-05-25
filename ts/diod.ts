@@ -36,7 +36,7 @@ export class Diod {
         }
     }
     stateSend(inpToSendTo: Element){
-        inpToSendTo.dispatchEvent(linkInputStateSend(this.state));
+        inpToSendTo.dispatchEvent(linkInputStateSend(this.state, this.element.id));
     }
     addDiodEventListeners(){
         addDragMethod(this.element, (ev: MouseEvent) => {
@@ -49,12 +49,10 @@ export class Diod {
                     this.immutable = true;
                     this.links.push(ev.detail);
                     this.setBackgroundColor();
-                    console.log('if');
                 } else if(!ev.detail.isOutput){
                     this.links.push(ev.detail);
                     this.stateSend(ev.detail.src);
                     this.setBackgroundColor();
-                    console.log('else if');
                     
                 }
                 else{
@@ -64,12 +62,10 @@ export class Diod {
             
         })
         this.element.addEventListener('sendOutcomeToDiod', (ev: any) => {
-            console.log(this.isConnected(ev.detail.id));
             
             if(this.isConnected(ev.detail.id)){
                 
                 if(ev.detail.outcome!==2){
-                    console.log('y');
                     this.changeDiodState(ev.detail.outcome)
                 } else {
                     this.changeDiodState(false);

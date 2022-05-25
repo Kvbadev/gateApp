@@ -18,8 +18,9 @@ export const sendOutcomeToDiod = (gateID: string, outcome: 0|1|2) => new CustomE
     }
 })
 
-export const linkInputStateSend = (state: boolean) => new CustomEvent('linkInputStateSend', {
+export const linkInputStateSend = (state: boolean, id: string) => new CustomEvent('linkInputStateSend', {
     detail: {
         state: state,
+        id: id
     }
 });

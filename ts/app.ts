@@ -7,6 +7,6 @@ const Selectors = {
     and: document.querySelector(".gate-and-menu"),
     or: document.querySelector(".gate-or-menu"),
 }
-// document.addEventListener('mousemove', ev => {console.log(ev.x, ev.y);
+// document.addEventListener('mousemove', ev => {console.log(ev.x, ev.y)});
 
 const menu = new Menu(Selectors.diod as HTMLDivElement, Selectors.not as HTMLDivElement, Selectors.and as HTMLDivElement, Selectors.or as HTMLDivElement, Selectors.board, {x:50 ,y:50});

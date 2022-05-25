@@ -7,17 +7,19 @@ export class Menu{
     notField: HTMLDivElement;
     andField: HTMLDivElement;
     orField: HTMLDivElement;
+    nandField: HTMLDivElement;
     board: Element;
     elementsSpawnpoint: {x: number, y: number};
 
-    constructor(diodBTN: HTMLDivElement, notBTN: HTMLDivElement, andBTN: HTMLDivElement, orBTN: HTMLDivElement, board: Element, spawnPoint: {x: number, y: number}){
+    constructor(diodBTN: HTMLDivElement, notBTN: HTMLDivElement, andBTN: HTMLDivElement, orBTN: HTMLDivElement, nandBTN: HTMLDivElement, board: Element, spawnPoint: {x: number, y: number}){
         this.diodField = diodBTN;
         this.notField = notBTN;
         this.andField = andBTN;
         this.orField = orBTN;
+        this.nandField = nandBTN;
         this.board = board;
         this.elementsSpawnpoint = spawnPoint;
-        this.elements = [this.diodField,this.notField, this.andField, this.orField];
+        this.elements = [this.diodField,this.notField, this.andField, this.orField, this.nandField];
         this.elements.forEach(element => {
 
             let count = 0;

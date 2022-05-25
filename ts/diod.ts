@@ -16,6 +16,7 @@ export class Diod {
         this.addDiodEventListeners();
     }
     changeDiodState(state?: boolean){ //ths instead of this to prevent some bugs
+        const oldState = this.state;
         if(state!=undefined){ //to change state directly, usually when diod is output element
             this.state = state;
             this.state ? this.element.classList.add("diod-on") : this.element.classList.remove("diod-on");
@@ -27,11 +28,9 @@ export class Diod {
                 console.log(this.state);
             }
         }
-        if(this.links){
-            for(const inp of this.links){ 
-                if(!inp.isOutput){
-                    this.stateSend(inp.src);
-                }
+        for(const inp of this.links){ 
+            if(!inp.isOutput){
+                this.stateSend(inp.src);
             }
         }
     }
@@ -48,12 +47,12 @@ export class Diod {
                 if(ev.detail.isOutput && !this.immutable){
                     this.immutable = true;
                     this.links.push(ev.detail);
+                    this.changeDiodState(false);
                     this.setBackgroundColor();
                 } else if(!ev.detail.isOutput){
                     this.links.push(ev.detail);
                     this.stateSend(ev.detail.src);
                     this.setBackgroundColor();
-                    
                 }
                 else{
                     console.log("This diod is already linked as an output!");
@@ -66,10 +65,9 @@ export class Diod {
             if(this.isConnected(ev.detail.id)){
                 
                 if(ev.detail.outcome!==2){
-                    this.changeDiodState(ev.detail.outcome)
-                } else {
-                    this.changeDiodState(false);
-                    console.log('none');
+                    if(ev.detail.outcome !== this.state){
+                        this.changeDiodState(ev.detail.outcome)
+                    }
                 }
             }
         })
@@ -77,12 +75,10 @@ export class Diod {
 
             if(this.isConnected(ev.detail.id)){
                 this.links = this.links.filter((link) => {
-                    // console.log(link);
                     return link.src.id !== ev.detail.id;
                 });
 
                 this.links.length ? this.setBackgroundColor() : this.element.style.background = "";
-                this.changeDiodState(false);
                 if(ev.detail.isOutput){
                     this.immutable = false;
                     console.log('output unlinked');

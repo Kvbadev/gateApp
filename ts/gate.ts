@@ -1,8 +1,9 @@
 import { addDragMethod } from "./drag.js";
 import {linkDiod, sendOutcomeToDiod, unlinkDiod} from "./customEvents.js";
+import { getGateInfo } from "./gatesInfo.js";
 
 export class Gate {
-    type: "NOT" | "OR" | "AND";
+    type: "NOT" | "OR" | "AND" | "NAND";
     outcome: 0|1|2;
     element: HTMLDivElement;
     inputs: Array<any>;
@@ -10,7 +11,7 @@ export class Gate {
     id: Number;
     color: any;
 
-    constructor(type: "NOT"|"OR"|"AND",el_id: Number) {
+    constructor(type: "NOT"|"OR"|"AND"|"NAND",el_id: Number) {
         this.type = type;
         this.id = el_id;
         this.element = this.createElement();
@@ -58,7 +59,7 @@ export class Gate {
                     if(this.inputs[IOnum].inpSrc){
                         this.inputs[IOnum].inpSrc.dispatchEvent(unlinkDiod(this.element.id));
                         this.inputs[IOnum].inpSrc = null;
-                        this.inputs[IOnum].inpState = null;
+                        this.inputs[IOnum].inpState = 2;
                         this.calcOutcome();
                     }
                     this.addSelectElementReminder();
@@ -71,17 +72,18 @@ export class Gate {
         }, this);
 
         newDiv.addEventListener('linkInputStateSend', (ev:any) => {
-            
+            console.log(`new state received on gate id: ${this.id}, state: ${ev.detail.state}`);
             
             if(this.inputs[0].inpSrc!=null && this.inputs[0].inpSrc.id === ev.detail.id){
+                console.log(`old input[0] state: ${this.inputs[0].inpState}; new: ${ev.detail.state}`);
                 this.inputs[0].inpState = ev.detail.state;  //if inp[0] does not exist or has other id, then latter one has to be event dispatcher
             } else {
+                console.log(`old input[1] state: ${this.inputs[1].inpState}; new: ${ev.detail.state}`);
                 this.inputs[1].inpState = ev.detail.state;
             }
             
             this.calcOutcome();
-            console.log(this.outcome);
-            
+            // console.log(this.outcome);
             
             if(this.output.outSrc){
                 this.output.outSrc.dispatchEvent(sendOutcomeToDiod(this.element.id, this.outcome));
@@ -164,6 +166,7 @@ export class Gate {
             const tmpTarget = ev.target as HTMLDivElement;
             if(this.isAlreadyListed(tmpTarget.id)){
                 console.log("Element already selected by either input or output!");
+                
             } else {
                 if(tmpTarget.classList.contains("diod-element")){
                     
@@ -178,102 +181,24 @@ export class Gate {
     }
 
     calcOutcome(){ //checks if any input is connected and if so what is their state to calculate output depending on gate
+        let out;
         if(this.type === "NOT"){
-            this.inputs[0].inpSrc ? this.outcome = !this.inputs[0].inpState as unknown as 0|1|2 : this.outcome = 2;
-            console.log(this.inputs[0].inpState);
+            out = (this.inputs[0].inpState == 1) ? 0:1;
+            this.outcome = out;
         } else if(this.type === "OR"){
-            const out = (this.inputs[1].inpSrc && this.inputs[0].inpSrc) ? (this.inputs[0].inpState == 1 || this.inputs[1].inpState == 1 ? 1 : 0) : 2;
-            
-            this.outcome = out as unknown as 0|1|2;
+            out = (this.inputs[0].inpState == 1 || this.inputs[1].inpState == 1) ? 1 : 0;
+            this.outcome = out;
         } else if(this.type === "AND"){
-            const out = (this.inputs[0].inpSrc && this.inputs[1].inpSrc) ? (this.inputs[0].inpState == 1 && this.inputs[1].inpState == 1 ? 1 : 0) : 2;
-            
+            out = (this.inputs[0].inpState == 1 && this.inputs[1].inpState == 1) ? 1 : 0;
+            this.outcome = out;
+        } else if(this.type === "NAND"){
+            out = (this.inputs[0].inpState == 0 || this.inputs[1].inpState == 0) ? 1 : 0;
             this.outcome = out;
         }
     }
     setInputsOutputsInfo(){ //sets initial inputs info
-        if(this.type === "NOT"){
-            this.inputs = [
-                {
-                    inpSrc: null,
-                    inpCenter: {
-                        inpOffsetX: 10,
-                        inpOffsetY: 25,
-                        sideLen: 9
-                    },
-                    inpState: null
-                }
-            ]
-            this.output = {
-                outSrc: null,
-                outCenter: {
-                    outOffsetX: 110,
-                    outOffsetY: 25,
-                    sideLen: 9
-                }
-            }
-        }
-        else if(this.type === "AND"){
-            this.inputs = [
-                {
-                    inpSrc: null,
-                    inpCenter: {
-                        inpOffsetX: 10,
-                        inpOffsetY: 13,
-                        sideLen: 6
-                    },
-                    inpState: null
-                },
-                {
-                    inpSrc: null,
-                    inpCenter: {
-                        inpOffsetX: 10,
-                        inpOffsetY: 36,
-                        sideLen: 6
-                    },
-                    inpState: null
-                }
-            ]
-            this.output = {
-                outSrc: null,
-                outCenter: {
-                    outOffsetX: 112,
-                    outOffsetY: 26,
-                    sideLen: 6
-                }
-            }
-        }
-        else if(this.type === "OR"){
-            this.inputs = [
-                {
-                    inpSrc: null,
-                    inpCenter: {
-                        inpOffsetX: 13,
-                        inpOffsetY: 13,
-                        sideLen: 6
-                    },
-                    inpState: null
-                },
-                {
-                    inpSrc: null,
-                    inpCenter: {
-                        inpOffsetX: 13,
-                        inpOffsetY: 36,
-                        sideLen: 6
-                    },
-                    inpState: null
-                }
-            ]
-            this.output = {
-                outSrc: null,
-                outCenter: {
-                    outOffsetX: 112,
-                    outOffsetY: 26,
-                    sideLen: 6
-                }
-            }
-        }
+        ([this.inputs,this.output] = getGateInfo(this.type));
     }
 }
 
-export type gateType = "NOT" | "OR" | "AND";
+export type gateType = "NOT" | "OR" | "AND" | "NAND";

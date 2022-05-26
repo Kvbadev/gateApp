@@ -24,3 +24,10 @@ export const linkInputStateSend = (state: boolean, id: string) => new CustomEven
         id: id
     }
 });
+export const deleteElement = () => new CustomEvent('deleteElement');
+
+export const diodRemoved = (diodID: string) => new CustomEvent('diodRemoved', {
+    detail: {
+        id: diodID
+    }
+});

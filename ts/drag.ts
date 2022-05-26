@@ -1,10 +1,11 @@
+import { deleteElement } from "./customEvents.js";
 export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ...onClickFuncArgs: any){
     let clickTime;
     element.addEventListener('mousedown', (ev: MouseEvent) => {
         element.style.zIndex = "1000";
         
         clickTime = new Date().getTime(); //to prevent changing state when dragging
-        const allowedClasses = ["board", "gate-board", "diod-element", "gate-img", "gate-color"];
+        const allowedClasses = ["board", "gate-board", "diod-element", "gate-img", "gate-color", "bin", "fa-solid"];
         
         let shiftX = ev.clientX - element.getBoundingClientRect().left;
         let shiftY = ev.clientY - element.getBoundingClientRect().top;
@@ -23,13 +24,13 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
             }
             return false;
         }
-
+        let elementBelow;
         const onMouseMove = (ev: MouseEvent) => {
             
             moveAt(ev.x, ev.y);
             
             element.hidden = true; //because item is always element below cursor
-            let elementBelow = document.elementFromPoint(ev.clientX,ev.clientY);
+            elementBelow = document.elementFromPoint(ev.clientX,ev.clientY);
             element.hidden = false;
 
             const wrongPos = (x:number, y:number, fire = true) => {
@@ -51,11 +52,16 @@ export function addDragMethod(element: HTMLDivElement, onClickFunc: Function, ..
         document.addEventListener('mousemove', onMouseMove);
 
         element.onmouseup = (ev: MouseEvent) => {
-            element.style.zIndex = "0";
-            document.removeEventListener('mousemove', onMouseMove);
-            document.oncontextmenu = null;
-            document.onscroll = null;
-            element.onmouseup = null;
+            
+            if(elementBelow && elementBelow.classList.contains("fa-dumpster")){
+                element.dispatchEvent(deleteElement());
+            } else {
+                element.style.zIndex = "0";
+                document.removeEventListener('mousemove', onMouseMove);
+                document.oncontextmenu = null;
+                document.onscroll = null;
+                element.onmouseup = null;
+            }
         }
         document.oncontextmenu = (ev: MouseEvent) => {
             moveAt(ev.x, ev.y);

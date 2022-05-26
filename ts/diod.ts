@@ -1,4 +1,4 @@
-import { linkInputStateSend } from "./customEvents.js";
+import { diodRemoved, linkInputStateSend, unlinkDiod } from "./customEvents.js";
 import { addDragMethod } from "./drag.js";
 export class Diod {
     links?: Array<any>;
@@ -25,7 +25,7 @@ export class Diod {
                 this.element.classList.toggle("diod-on");
                 this.state = !this.state;
             } else {
-                console.log(this.state);
+                console.log(`${this.element.id} - state: ${this.state}`);
             }
         }
         for(const inp of this.links){ 
@@ -55,7 +55,7 @@ export class Diod {
                     this.setBackgroundColor();
                 }
                 else{
-                    console.log("This diod is already linked as an output!");
+                    console.log(`This diod (${this.element.id}) is already linked as an output!`);
                 }
             }
             
@@ -81,10 +81,16 @@ export class Diod {
                 this.links.length ? this.setBackgroundColor() : this.element.style.background = "";
                 if(ev.detail.isOutput){
                     this.immutable = false;
-                    console.log('output unlinked');
+                    console.log(`output unlinked from diod - ${this.element.id}`);
                 }
             }
         
+        })
+        this.element.addEventListener('deleteElement', () => {
+            this.links.forEach( (link, i) => {
+                link.src.dispatchEvent(diodRemoved(this.element.id))
+            })
+            this.element.remove();
         })
     }
     isConnected(id: string){

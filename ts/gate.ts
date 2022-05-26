@@ -24,10 +24,12 @@ export class Gate {
         newDiv.id = `gate${this.type}-`+this.id;
         newDiv.classList.add("gate-board");
         newDiv.draggable = false;
+        newDiv.ondragstart = (ev) => false;
 
         const divImg = document.createElement("img");
         divImg.classList.add("gate-img");
         divImg.draggable = false;
+        divImg.ondragstart = (ev) => false;
         divImg.src = `css/gate${this.type}board.png`;
 
         const divColor = document.createElement("div");
@@ -67,7 +69,7 @@ export class Gate {
                 }
 
             } else {
-                console.log(this.outcome);
+                console.log(`Gate - ${this.element.id}, state: ${this.outcome == 2 ? "Not connected correctly!" : this.outcome}`);
             }
         }, this);
 
@@ -96,10 +98,8 @@ export class Gate {
             newDiv.remove();
         })
         newDiv.addEventListener('diodRemoved', (ev: any) => {
-            console.log(this.output, this.inputs);
             this.inputs.forEach( (input, i) => {
                 if(input.inpSrc){
-                    console.log(ev.detail.id, input.inpSrc.id);
                     if(input.inpSrc.id === ev.detail.id){
                         input.inpSrc = null;
                         input.inpState = 2;

@@ -27,11 +27,13 @@ body{
     padding: 10px;
 }
 .elements > div{
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
     margin: 4px;
     height: 5vw;
     width: 13vw;
-    /* padding: 1vw; */
     font-size: 30px;
     cursor: pointer;
     border: solid 2px white;
@@ -43,12 +45,13 @@ body{
     transition:all 200ms linear;
 }
 .elements > div:hover{
-    /* transition:all 200ms linear; */
-    /* background-color: rgba(230, 233, 44, 0.3); */
     background-color: rgb(197, 196, 190);
 }
 .elements > div > img{
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
     width: 100px;
     height: 50px;
 }
@@ -63,7 +66,6 @@ body{
 
 .diod-element{
     position: absolute;
-    /* border-radius: 50px; */
     width: var(--diod-side);
     height: var(--diod-side);
     cursor: pointer;
@@ -72,35 +74,34 @@ body{
     z-index: 1;
 }
 .diod-on{
-    /* animation: diod_border 2s linear infinite; */
-    /* background: rgb(6,176,73); */
-    /* border-image: linear-gradient(90deg, rgba(6,176,73,1) 0%, rgba(47,186,24,0.9962359943977591) 40%, rgba(119,255,0,1) 100%); */
-    border-image: linear-gradient(90deg, rgb(186, 120, 73) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%); 
+    -o-border-image: linear-gradient(90deg, rgb(186, 120, 73) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%);
+       border-image: linear-gradient(90deg, rgb(186, 120, 73) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%); 
     border-image-slice: 1;
-    /* background: rgb(180,108,58); */
 }
-/*@keyframes diod_border{
-    0%{
-    border-image: linear-gradient(90deg, rgb(186, 120, 73) 0%, rgba(253,151,29,1) 50%, rgba(249,252,69,1) 100%); 
-    }
-    50%{
-    border-image: linear-gradient(90deg, rgb(177, 166, 157) 0%, rgba(253,151,29,1) 50%, rgb(11, 23, 156) 100%); 
-    }
-    100%{
-    border-image: linear-gradient(90deg, rgb(197, 9, 75) 0%, rgba(253,151,29,1) 50%, rgb(0, 0, 0) 100%); 
-    }
-} */
 
 .gate-board{
     color: black;
     position: absolute;
     width: var(--gate-width);
     height: var(--gate-heigth);
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 .gate-board > img {
+    cursor: pointer;
     width: 100%;
     height: 100%;
-    cursor: pointer;
 }
 .select-mode-reminder{
     position:absolute; 

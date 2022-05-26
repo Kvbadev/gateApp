@@ -1,5 +1,7 @@
 import {Menu} from './menu.js';
 
+document.ondragstart = function (){return false};
+
 const Selectors = {
     board: document.querySelector(".board"),
     diod: document.querySelector(".diod-menu"),

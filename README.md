@@ -19,7 +19,7 @@
 ![gateapp](https://user-images.githubusercontent.com/61760153/203745075-a281effa-88f5-4079-ae9b-a43ad16f1abd.png)
 
 
-This project was created to help me while I was learning logic gates in school. Instead, it changed into kind of complex project with its own dragging and dropping system, 4 gates to choose from, fully functional LED diod element and system to prevent user from moving elements outside the main window. There is also a dumpster icon, where You can dispose of the unused elements.
+This project was created to help me while I was learning logic gates in school. Instead, it turned out to be a complex project with its own dragging and dropping system, 4 gates to choose from, fully functional LED element and a system to prevent user from moving elements outside of the main window. There is also a dumpster icon, where you can dispose of unused elements.
 
 
 ### Built With
